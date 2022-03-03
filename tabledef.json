@@ -1,0 +1,32 @@
+{
+    "sourceFormat": "BIGTABLE",
+    "sourceUris": [
+     https://googleapis.com/bigtable/projects/db-timeseries/instances/timeseries/tables/timeseries-bt
+    ],
+    "bigtableOptions": {
+        "readRowkeyAsString": "true",
+        "columnFamilies" : [
+            {
+                "familyId": "cell_data",
+                "onlyReadLatest": "true",
+                "columns": [
+              {
+                  "qualifierString": "attr1",
+                  "type": "STRING"
+              },
+              {
+                  "qualifierString": "attr2",
+                  "type": "STRING"
+              }
+              ,
+              {
+                  "qualifierString": "tstamp",
+                  "type": "STRING"
+              }
+          ]
+
+            }
+        ]
+    }
+    
+}
