@@ -1,4 +1,4 @@
-# Time Series Demo 
+# Running Analytics for Time Series in GCP: crash demo
 Time-series demo involving BigQuery and BigTable
 
 ## Download the demo data and table definition file: 
