@@ -1,5 +1,9 @@
 # Running Analytics for Time Series in GCP: crash demo
-Time-series demo involving BigQuery and BigTable
+
+Crash demo to show:
+- how to Federate a BigTable table containing time series data to BigQuery
+- how to run BiqQuery Analytics query on the federated table
+- how to transform the federated table into a native table, and harness the analytical power of BigQuery
 
 ## Download the demo data and table definition file: 
 In the folder demo-data you will find two files:
