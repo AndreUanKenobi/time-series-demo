@@ -127,20 +127,23 @@ Note: this table definition file will only federate three columns: `attr1`, `att
 ```
 bq mk \
 --external_table_definition=tabledef.json \
-timeseries.btfederated
+timeseries.federated
 ```
 3. In the BigQuery Web UI, run a query on the newly federated table: 
 ```
 SELECT rowkey, 
-cell_data.attr1.cell.value as attr1_raw, 
-cell_data.attr2.cell.value as attr2_raw, 
-cell_data.tstamp.cell.value as ts_raw, 
-
-
 cast(cell_data.attr1.cell.value as NUMERIC) attr1,
 cast(cell_data.attr2.cell.value as NUMERIC) attr2,
+cast(cell_data.attr3.cell.value as NUMERIC) attr3,
+cast(cell_data.attr4.cell.value as NUMERIC) attr4,
+cast(cell_data.attr5.cell.value as NUMERIC) attr5,
+cast(cell_data.attr6.cell.value as NUMERIC) attr6,
+cast(cell_data.attr7.cell.value as NUMERIC) attr7,
+cast(cell_data.attr8.cell.value as NUMERIC) attr8,
+cast(cell_data.attr9.cell.value as NUMERIC) attr9,
+cast(cell_data.attr10.cell.value as NUMERIC) attr10,
 timestamp(cell_data.tstamp.cell.value) ts
-FROM `db-timeseries.timeseries.btfederated` LIMIT 10
+FROM `db-timeseries.timeseries.federated` LIMIT 10
 
 ```
 
@@ -151,7 +154,7 @@ CREATE VIEW `db-timeseries.timeseries.view` AS
 SELECT timestamp(cell_data.tstamp.cell.value) ts,
 cast(cell_data.attr1.cell.value as NUMERIC) attr1,
 cast(cell_data.attr2.cell.value as NUMERIC) attr2
- FROM `db-timeseries.timeseries.btfederated` 
+ FROM `db-timeseries.timeseries.federated` 
 
 ```
 2. Run an aggregation on that view:
@@ -161,7 +164,7 @@ group by extract(hour from ts)
 ```
 
 Appreciate that performance is still suboptimal since we’re using the BigTable execution engine. 
-We need to convert the underlying table `db-timeseries.timeseries.btfederated` from **external** to **native**.
+We need to convert the underlying table `db-timeseries.timeseries.federated` from **external** to **native**.
 
 
 ## Step 4: Convert to native table, re-run analytics
