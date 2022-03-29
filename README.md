@@ -50,7 +50,7 @@ cbt read timeseries
 {
     "sourceFormat": "BIGTABLE",
     "sourceUris": [
-     https://googleapis.com/bigtable/projects/db-timeseries/instances/timeseries/tables/timeseries
+     https://googleapis.com/bigtable/projects/openreachday2022/instances/bigtable-timeseries/tables/bigtable-timeseries
     ],
     "bigtableOptions": {
         "readRowkeyAsString": "true",
@@ -65,6 +65,46 @@ cbt read timeseries
               },
               {
                   "qualifierString": "attr2",
+                  "type": "STRING"
+              }
+              ,
+                  {
+                  "qualifierString": "attr3",
+                  "type": "STRING"
+              }
+              ,
+                  {
+                  "qualifierString": "attr4",
+                  "type": "STRING"
+              }
+              ,
+              {
+                  "qualifierString": "attr5",
+                  "type": "STRING"
+              }
+              ,
+              {
+                  "qualifierString": "attr6",
+                  "type": "STRING"
+              }
+              ,
+              {
+                  "qualifierString": "attr7",
+                  "type": "STRING"
+              }
+              ,
+              {
+                  "qualifierString": "attr8",
+                  "type": "STRING"
+              }
+              ,
+              {
+                  "qualifierString": "attr9",
+                  "type": "STRING"
+              }
+              ,
+              {
+                  "qualifierString": "attr10",
                   "type": "STRING"
               }
               ,
