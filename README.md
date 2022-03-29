@@ -15,7 +15,7 @@ In the main folder, you will find one file:
 
 
 ## Preparation steps
-1. Create BigTable cluster (default timeseries-bt)
+1. Create BigTable cluster (default timeseries)
 2. Create BigQuery dataset (default db-timeseries:timeseries)
 3. Upload the demo data (bigtable_import.csv) and the table definition file (tabledef.json) locally to Cloud Shell
 
@@ -33,15 +33,15 @@ echo instance = timeseries >> ~/.cbtrc
 ```
 4. Create BigTable table and column family
 ```
-cbt createtable timeseries-bt families="cell_data"
+cbt createtable timeseries families="cell_data"
 ```
 5. Import data into BigTable
 ```
-cbt import timeseries-bt bigtable_import.csv column-family=cell_data
+cbt import timeseries bigtable_import.csv column-family=cell_data
 ```
 6. Verify the dataload is ok
 ```
-cbt read timeseries-bt
+cbt read timeseries
 ```
 
 ## Step 2: Create a federated table in BigQuery
@@ -50,7 +50,7 @@ cbt read timeseries-bt
 {
     "sourceFormat": "BIGTABLE",
     "sourceUris": [
-     https://googleapis.com/bigtable/projects/db-timeseries/instances/timeseries/tables/timeseries-bt
+     https://googleapis.com/bigtable/projects/db-timeseries/instances/timeseries/tables/timeseries
     ],
     "bigtableOptions": {
         "readRowkeyAsString": "true",
@@ -107,7 +107,7 @@ FROM `db-timeseries.timeseries.btfederated` LIMIT 10
 ## Step 3: Run Analytics on the federated table
 1. Create a BigQuery view on the newly imported data:
 ```
-CREATE VIEW `db-timeseries.timeseries.btview` AS
+CREATE VIEW `db-timeseries.timeseries.view` AS
 SELECT timestamp(cell_data.tstamp.cell.value) ts,
 cast(cell_data.attr1.cell.value as NUMERIC) attr1,
 cast(cell_data.attr2.cell.value as NUMERIC) attr2
@@ -116,7 +116,7 @@ cast(cell_data.attr2.cell.value as NUMERIC) attr2
 ```
 2. Run an aggregation on that view:
 ```
-SELECT extract(hour from ts) as hour, sum(attr1) as sum_attr1, sum(attr2)  as sum_attr2 FROM `db-timeseries.timeseries.btview` 
+SELECT extract(hour from ts) as hour, sum(attr1) as sum_attr1, sum(attr2)  as sum_attr2 FROM `db-timeseries.timeseries.view` 
 group by extract(hour from ts)
 ```
 
@@ -127,12 +127,12 @@ We need to convert the underlying table `db-timeseries.timeseries.btfederated` f
 ## Step 4: Convert to native table, re-run analytics
 Reference: [Is it possible to convert external tables to native in BigQuery?](https://stackoverflow.com/questions/43386615/is-it-possible-to-convert-external-tables-to-native-in-bigquery)
 
-1. Create an empty BigTable destination table, default name `db-timeseries.timeseries.btnative`
+1. Create an empty BigTable destination table, default name `db-timeseries.timeseries.native`
 
 2. Run the following query [making sure to store its result to the newly created permanent destination table](https://cloud.google.com/bigquery/docs/writing-results):
 ```
 SELECT  ts, attr1, attr2
-FROM `db-timeseries-sky.timeseries.btview`
+FROM `db-timeseries-sky.timeseries.view`
 ```
 Suggest to set the **Destination table write preference** property to **Overwrite table**
 
@@ -140,10 +140,10 @@ Suggest to set the **Destination table write preference** property to **Overwrit
 
 ```
 SELECT  ts, attr1, attr2
-FROM `db-timeseries-sky.timeseries.btnative`
+FROM `db-timeseries-sky.timeseries.native`
 ```
 
 ```
-SELECT extract(hour from ts) as hour, sum(attr1) as sum_attr1, sum(attr2)  as sum_attr2 FROM `db-timeseries.timeseries.btnative` 
+SELECT extract(hour from ts) as hour, sum(attr1) as sum_attr1, sum(attr2)  as sum_attr2 FROM `db-timeseries.timeseries.native` 
 group by extract(hour from ts)
 ```
